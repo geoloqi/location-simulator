@@ -31,4 +31,6 @@ Command Line Options
 * `--start=INDEX` Starts re-playing the log at the specified index. Useful for resuming a stopped update instead of starting over from the beginning of the trip.
 * `--rate=MULTIPLIER` Plays back the data at a different playback rate. To play back the logs 10x faster, use the value 10. For normal speed, use 1.
 * `--wait=MAX_WAIT_TIME` Sets a max for the time delay between sending points. For example `--wait=10` will always send the point every 10 seconds or less.
+* `--client_id=YOUR_CLIENT_ID` Sets your client id. You can also simply copy and paste your client id into the `location-update` file on line 8.
+* `--client_secret=YOUR_CLIENT_SECRET` Sets your client secret. You can also simply copy and paste your client secret into the `location-update` file on line 9.
 
