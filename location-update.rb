@@ -5,8 +5,8 @@ require 'optparse'
 
 # Put in your client ID and secret from
 # https://developers.geoloqi.com
-LQ_CLIENT_ID = ''
-LQ_CLIENT_SECRET = ''
+LQ_CLIENT_ID = 'd48e8d291430ace29b39c4ce94fb0292'
+LQ_CLIENT_SECRET = 'd48e8d291430ace29b39c4ce94fb0292'
 
 options = {}
 OptionParser.new do |opts|
@@ -18,6 +18,10 @@ OptionParser.new do |opts|
 
   opts.on("-t", "--token=[TOKEN]", "Access token") do |t|
     options[:access_token] = t
+  end
+
+  opts.on("-w", "--wait=[WAIT]", "Maxium amount of time to wait between updates") do |w|
+    options[:wait] = w.to_i || 300
   end
 
   opts.on("-s", "--start=[START]", Integer, "Start index") do |s|
@@ -36,6 +40,10 @@ end.parse!
 if options[:file].nil?
   puts "Usage: location-update.rb --file=filename.json"
   exit!
+end
+
+if options[:wait].nil?
+  options[:wait] = 300
 end
 
 if !FileTest.exist?(options[:file])
@@ -60,8 +68,6 @@ else
   }
 end
 
-
-
 profile = geoloqi.get 'account/profile'
 puts 
 puts "Logged in as #{profile[:username]}"
@@ -69,8 +75,6 @@ puts "Access token: #{geoloqi.access_token}"
 puts
 
 history = JSON.parse File.read(File.join(options[:file]))
-
-puts history['points'].length
 
 start_index = options[:start]
 
@@ -86,9 +90,9 @@ while true do
     this_time = Time.at point['date_ts']
 
     diff = this_time - last_time
-
-    diff = 300 if diff > 300
-
+    
+    diff = options[:wait] if diff > options[:wait]
+    puts ""
     puts "Waiting #{diff} seconds..."
 
     sleep diff / playback_rate
@@ -103,7 +107,7 @@ while true do
     new_point.delete 'date_ts'
 
     puts new_point.to_json if options[:verbose]
-
+    puts ""
     response = geoloqi.post 'location/update', [new_point]
     puts response if options[:verbose]
 
