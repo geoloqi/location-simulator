@@ -5,10 +5,14 @@ require 'optparse'
 
 # Put in your client ID and secret from
 # https://developers.geoloqi.com
-LQ_CLIENT_ID = 'd48e8d291430ace29b39c4ce94fb0292'
-LQ_CLIENT_SECRET = 'd48e8d291430ace29b39c4ce94fb0292'
+LQ_CLIENT_ID = nil
+LQ_CLIENT_SECRET = nil 
 
-options = {}
+options = {
+  client_id: LQ_CLIENT_ID,
+  client_secret: LQ_CLIENT_SECRET
+}
+
 OptionParser.new do |opts|
   opts.banner = "Usage: location-update.rb --file=history.json --rate=10 --start=0 --verbose"
 
@@ -35,6 +39,15 @@ OptionParser.new do |opts|
   opts.on("-f", "--file=FILE", "History file") do |f|
     options[:file] = f
   end
+
+  opts.on("-I", "--client_id=[ID]", "Application client_id") do |i|
+    options[:client_id] = i
+  end
+
+  opts.on("-S", "--client_secret=[SECRET]", "Application client_secret") do |s|
+    options[:client_secret] = s
+  end
+
 end.parse!
 
 if options[:file].nil?
@@ -53,18 +66,26 @@ end
 
 playback_rate = options[:playback_rate] || 5
 
+if options[:client_id].nil?
+  options[:client_id] = ask("Enter your applicaitons client_id:  ") { |q| q.echo = true }
+end
+
+if options[:client_secret].nil?
+  options[:client_secret] = ask("Enter your applicaitons client_secret:  ") { |q| q.echo = true }
+end
+
 if options[:access_token].nil?
   username = ask("Enter your username:  ") { |q| q.echo = true }
   password = ask("Enter your password:  ") { |q| q.echo = "*" }
   geoloqi = Geoloqi::Session.new :access_token => nil, :config => {
-    :client_id => LQ_CLIENT_ID,
-    :client_secret => LQ_CLIENT_SECRET
+    :client_id => options[:client_id],
+    :client_secret =>  options[:client_secret]
   }
   geoloqi.establish :grant_type => 'password', :username => username, :password => password
 else
   geoloqi = Geoloqi::Session.new :access_token => options[:access_token], :config => {
-    :client_id => LQ_CLIENT_ID,
-    :client_secret => LQ_CLIENT_SECRET
+    :client_id => options[:client_id],
+    :client_secret =>  options[:client_secret]
   }
 end
 

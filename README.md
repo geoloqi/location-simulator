@@ -13,6 +13,15 @@ See https://developers.geoloqi.com/api/location/history for documentation.
 You can use the History tab on the Geoloqi website to preview your results before downloading. Visit
 the website at https://geoloqi.com/map to see your history and find some data to download.
 
+You will also need to put your applications `clientID` and `clientSecret` into the file on lines 7 and 8.
+
+Example Usage
+-------------
+
+`ruby location-simulator.rb --file=routes/pdx-commute.json`
+
+If you did not provide a token option you will be asked to login with the username and password of the user who will have thier location simulated.
+
 Command Line Options
 --------------------
 
@@ -21,4 +30,5 @@ Command Line Options
 * `--token=ACCESS_TOKEN` If you already have an access token, you can provide it at the command line to bypass the login step the script does.
 * `--start=INDEX` Starts re-playing the log at the specified index. Useful for resuming a stopped update instead of starting over from the beginning of the trip.
 * `--rate=MULTIPLIER` Plays back the data at a different playback rate. To play back the logs 10x faster, use the value 10. For normal speed, use 1.
+* `--wait=MAX_WAIT_TIME` Sets a max for the time delay between sending points. For example `--wait=10` will always send the point every 10 seconds or less.
 
