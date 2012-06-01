@@ -18,7 +18,7 @@ You will also need to put your applications `clientID` and `clientSecret` into t
 Example Usage
 -------------
 
-`ruby location-simulator.rb --file=routes/pdx-commute.json`
+`ruby location-simulator.rb --file=./routes/pdx-commute.json`
 
 If you did not provide a token option you will be asked to login with the username and password of the user who will have thier location simulated.
 
