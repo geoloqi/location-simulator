@@ -4,6 +4,15 @@ Location Simulator
 This script is a utility for debugging and testing Geoloqi applications. You can replay a Geoloqi history file
 back into the API so that you can test the streaming API or geofencing with easily re-creatable data.
 
+Requirements
+------------
+
+- geoloqi
+- highline
+
+    $ gem install geoloqi
+    $ gem install highline
+
 Usage
 -----
 
